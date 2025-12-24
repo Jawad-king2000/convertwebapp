@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  # Backend API Service
+  backend:
+    build: ./backend
+    container_name: converter-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/outputs:/app/outputs
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+
+  # Frontend Web Service
+  frontend:
+    build: ./frontend
+    container_name: converter-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+    restart: unless-stopped

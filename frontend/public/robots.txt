@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://localhost:3000/sitemap.xml
+
+# Crawl-delay (optional, adjust based on your server capacity)
+Crawl-delay: 1
