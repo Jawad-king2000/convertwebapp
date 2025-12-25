@@ -20,9 +20,9 @@ A modern, full-stack web application that converts files between multiple format
 
 ## 🚀 One-Click Deployment
 
-Deploy your own copy of Universal File Converter to Render with just one click. This will automatically set up the backend and frontend services.
+Deploy your own copy of Universal File Converter to Railway with just one click. This will automatically set up the backend and frontend services.
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Jawad-king2000/convertwebapp)
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new/template?template=https://github.com/Jawad-king2000/convertwebapp&envs=BACKEND_CORS_ORIGINS&envs=NEXT_PUBLIC_API_URL)
 
 ## 📋 Supported Conversions
 
