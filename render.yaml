@@ -1,0 +1,41 @@
+services:
+  # Backend Service (Python with Docker)
+  - type: web
+    name: convertwebapp-backend
+    env: docker
+    plan: free
+    region: oregon 
+    rootDir: backend
+    # If using rootDir: backend, the context is backend.
+    # But Dockerfile copies requirements.txt from . (which is backend folder now).
+    # Wait, in the repo, it is backend/Dockerfile.
+    # If I set rootDir: backend, then the build context is backend.
+    # So COPY requirements.txt . works if it's in backend.
+    # Yes, ls showed requirements.txt in backend.
+    # So rootDir: backend is correct.
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: BACKEND_CORS_ORIGINS
+        fromService:
+          type: web
+          name: convertwebapp-frontend
+          property: url
+
+  # Frontend Service (Next.js Node)
+  - type: web
+    name: convertwebapp-frontend
+    env: node
+    plan: free
+    region: oregon
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.10.0 # Specify a recent node version
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: convertwebapp-backend
+          property: url

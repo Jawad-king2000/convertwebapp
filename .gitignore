@@ -32,3 +32,6 @@ Thumbs.db
 
 # Docker
 *.log
+
+github_key
+github_key.pub

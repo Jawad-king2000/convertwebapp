@@ -11,6 +11,8 @@ interface ConverterFeatureProps {
     initialOutputFormat?: string;
 }
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 export default function ConverterFeature({
     initialInputFormat = '',
     initialOutputFormat = ''
@@ -35,7 +37,7 @@ export default function ConverterFeature({
             const formData = new FormData();
             formData.append('file', file);
 
-            const response = await fetch('http://localhost:8000/api/detect-format', {
+            const response = await fetch(`${API_URL}/api/detect-format`, {
                 method: 'POST',
                 body: formData,
             });
@@ -83,7 +85,7 @@ export default function ConverterFeature({
             formData.append('file', uploadedFile);
             formData.append('output_format', selectedFormat);
 
-            const response = await fetch('http://localhost:8000/api/convert', {
+            const response = await fetch(`${API_URL}/api/convert`, {
                 method: 'POST',
                 body: formData,
             });
