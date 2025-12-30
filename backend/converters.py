@@ -177,14 +177,15 @@ def docx_to_pdf(input_path: Path, output_dir: Path) -> Path:
     html_path = docx_to_html(input_path, output_dir)
     output_path = output_dir / f"{uuid.uuid4()}.pdf"
     
+    # Configure pdfkit to use the installed wkhtmltopdf
     try:
+        # Standard path in Debian/Ubuntu (Docker)
+        config = pdfkit.configuration(wkhtmltopdf='/usr/bin/wkhtmltopdf')
+        pdfkit.from_file(str(html_path), str(output_path), configuration=config)
+    except OSError:
+        # Fallback for local development if not in standard path
         pdfkit.from_file(str(html_path), str(output_path))
-    except:
-        # Fallback: create a simple text-based PDF
-        import subprocess
-        # Alternative: use LibreOffice if available
-        pass
-    
+        
     return output_path
 
 
