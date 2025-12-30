@@ -32,6 +32,8 @@ export default function ConverterFeature({
         // If we do (e.g. tools page), keep it.
         if (!initialOutputFormat) setSelectedFormat('');
 
+        console.log('Using API URL:', API_URL); // Debugging log
+
         try {
             // Detect file format
             const formData = new FormData();
@@ -43,7 +45,9 @@ export default function ConverterFeature({
             });
 
             if (!response.ok) {
-                throw new Error('Failed to detect file format');
+                const errorText = await response.text();
+                console.error('File format detection failed:', response.status, errorText);
+                throw new Error(`Failed to detect format: ${response.status} ${response.statusText}`);
             }
 
             const data = await response.json();
@@ -56,8 +60,8 @@ export default function ConverterFeature({
             }
 
         } catch (err) {
-            setError('Error detecting file format. Please try again.');
-            console.error(err);
+            console.error('Full upload error:', err);
+            setError('Error detecting file format. Please check console for details.');
         }
     };
 
