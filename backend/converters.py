@@ -475,16 +475,25 @@ def image_to_image(input_path: Path, output_format: str, output_dir: Path) -> Pa
     """
     Converts between image formats
     """
+    print(f"DEBUG: Starting image conversion: {input_path} -> {output_format}")
     output_path = output_dir / f"{uuid.uuid4()}.{output_format}"
     
-    img = Image.open(input_path)
-    
-    # Convert RGBA to RGB for JPEG
-    if output_format.lower() in ['jpg', 'jpeg'] and img.mode == 'RGBA':
-        rgb_img = Image.new('RGB', img.size, (255, 255, 255))
-        rgb_img.paste(img, mask=img.split()[3] if len(img.split()) == 4 else None)
-        img = rgb_img
-    
-    img.save(output_path, output_format.upper())
-    
-    return output_path
+    try:
+        img = Image.open(input_path)
+        print(f"DEBUG: Image opened successfully. Mode: {img.mode}, Size: {img.size}")
+        
+        # Convert RGBA to RGB for JPEG
+        if output_format.lower() in ['jpg', 'jpeg'] and img.mode == 'RGBA':
+            print("DEBUG: Converting RGBA to RGB")
+            rgb_img = Image.new('RGB', img.size, (255, 255, 255))
+            rgb_img.paste(img, mask=img.split()[3] if len(img.split()) == 4 else None)
+            img = rgb_img
+        
+        print(f"DEBUG: Saving to {output_path}")
+        img.save(output_path, output_format.upper())
+        print("DEBUG: Save complete")
+        
+        return output_path
+    except Exception as e:
+        print(f"DEBUG: Image conversion failed: {e}")
+        raise e

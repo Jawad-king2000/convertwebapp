@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y \
     libmagic1 \
     libgl1 \
     libglib2.0-0 \
+    libwebp-dev \
+    libjpeg-dev \
+    libpng-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements file
