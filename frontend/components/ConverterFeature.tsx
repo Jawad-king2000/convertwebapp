@@ -107,16 +107,23 @@ export default function ConverterFeature({
                 throw new Error('Conversion returned an empty file.');
             }
 
+            console.log('Download ready. Blob size:', blob.size);
+            // alert(`Debug: Download starting! Size: ${blob.size} bytes`); 
+
             setProgress(100);
 
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `converted.${selectedFormat}`;
+            a.download = `converted_${Date.now()}.${selectedFormat}`; // Unique filename
             document.body.appendChild(a);
             a.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(a);
+
+            // Small delay to ensure browser register the click before cleanup
+            setTimeout(() => {
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }, 100);
 
             setTimeout(() => {
                 setIsConverting(false);
