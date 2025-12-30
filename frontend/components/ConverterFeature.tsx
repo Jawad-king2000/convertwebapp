@@ -97,12 +97,18 @@ export default function ConverterFeature({
             if (progressInterval) clearInterval(progressInterval);
 
             if (!response.ok) {
-                throw new Error('Conversion failed');
+                const errorText = await response.text();
+                throw new Error(`Conversion failed with status: ${response.status}. Details: ${errorText}`);
+            }
+
+            const blob = await response.blob();
+
+            if (blob.size === 0) {
+                throw new Error('Conversion returned an empty file.');
             }
 
             setProgress(100);
 
-            const blob = await response.blob();
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
